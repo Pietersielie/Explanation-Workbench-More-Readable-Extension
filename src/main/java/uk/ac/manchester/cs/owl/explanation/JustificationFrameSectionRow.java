@@ -48,8 +48,10 @@ public class JustificationFrameSectionRow extends AbstractOWLFrameSectionRow<Exp
         for(int i = 0; i < depth; i++) {
             sb.append("        ");
         }
-        sb.append(rendering);
-        return sb.toString();
+        sb.append("\"");
+	sb.append(rendering);
+        sb.append("\" (This is where the creator-defined explanation will go.)");
+	return sb.toString();
     }
 
     @Override
