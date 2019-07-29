@@ -2,6 +2,7 @@ package uk.ac.manchester.cs.owl.explanation;
 
 import org.protege.editor.core.ui.list.MListButton;
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSectionRow;
 import org.protege.editor.owl.ui.frame.OWLFrameSection;
@@ -9,9 +10,11 @@ import org.semanticweb.owl.explanation.api.Explanation;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLAnnotation;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Set;
 import java.util.List;
 
 /**
@@ -23,8 +26,13 @@ import java.util.List;
 public class JustificationFrameSectionRow extends AbstractOWLFrameSectionRow<Explanation<OWLAxiom>, OWLAxiom, OWLAxiom>{
 
     private int depth;
-    
+    private static boolean useAnnotatedExplanations = true;
+    private static boolean useExpandedKeywords = true;
 
+    public void setUseAnnotatedExplanations(boolean b) { useAnnotatedExplanations = b;}
+    
+    public void setUseExpandedKeywords(boolean b) { useExpandedKeywords = b;}
+    
     public JustificationFrameSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection<Explanation<OWLAxiom>, OWLAxiom, OWLAxiom> section, Explanation<OWLAxiom> rootObject, OWLAxiom axiom, int depth) {
         super(owlEditorKit, section, getOntologyForAxiom(owlEditorKit, axiom), rootObject, axiom);
         this.depth = depth;
@@ -48,11 +56,52 @@ public class JustificationFrameSectionRow extends AbstractOWLFrameSectionRow<Exp
         for(int i = 0; i < depth; i++) {
             sb.append("        ");
         }
-        sb.append("\"");
-	sb.append(rendering);
-        sb.append("\" (This is where the creator-defined explanation will go.)");
+	if(useAnnotatedExplanations){
+            Set<OWLAnnotation> annotations = getAxiom().getAnnotations();
+            if (!annotations.isEmpty()) {
+                OWLModelManager protegeManager = getOWLModelManager();
+                for (OWLAnnotation annotation : annotations){
+                    //if(annotation.getProperty().getIRI() == OWLAnnotatedExplanationIRI){
+                        sb.append(protegeManager.getRendering(annotation.getValue()));
+                        return sb.toString();
+                    //}
+                }
+            }
+        }
+        
+        if(useExpandedKeywords){
+            sb.append(expandKeywords(rendering));
+        }
 	return sb.toString();
     }
+
+    public String expandKeywords(String axiom) {
+	String[] s = axiom.split(" ");
+	String result = "";
+	for(String w : s){
+	    if(w.equals("SubClassOf"))
+		w = "is a subclass of";
+	    if(w.equals("some"))
+		w = "at least one";
+	    if(w.equals("EquivalentTo"))
+		w = "is equivalent to";
+	    if(w != s[s.length - 1])
+		result += w + " ";
+	    else
+		result += w;
+	}
+	return result;
+    }
+
+    /*public String colourString(String s, String colour){
+	StringBuilder sb = new StringBuilder();
+	for(Character c : s.toCharArray()){
+	    sb.append("<font color=" + colour + ">");
+	    sb.append(c);
+	    sb.append("</font>");
+
+	return sb.toString();
+    }*/
 
     @Override
     public List<MListButton> getAdditionalButtons() {
