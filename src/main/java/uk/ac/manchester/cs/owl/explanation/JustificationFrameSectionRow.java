@@ -33,6 +33,10 @@ public class JustificationFrameSectionRow extends AbstractOWLFrameSectionRow<Exp
     
     public void setUseExpandedKeywords(boolean b) { useExpandedKeywords = b;}
     
+    public boolean getUseAnnotatedExplanations() { return useAnnotatedExplanations;}
+    
+    public boolean getUseExpandedKeywords() { return useExpandedKeywords;}
+    
     public JustificationFrameSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection<Explanation<OWLAxiom>, OWLAxiom, OWLAxiom> section, Explanation<OWLAxiom> rootObject, OWLAxiom axiom, int depth) {
         super(owlEditorKit, section, getOntologyForAxiom(owlEditorKit, axiom), rootObject, axiom);
         this.depth = depth;
@@ -62,7 +66,8 @@ public class JustificationFrameSectionRow extends AbstractOWLFrameSectionRow<Exp
                 OWLModelManager protegeManager = getOWLModelManager();
                 for (OWLAnnotation annotation : annotations){
                     //if(annotation.getProperty().getIRI() == OWLAnnotatedExplanationIRI){
-                        sb.append(protegeManager.getRendering(annotation.getValue()));
+                        sb.append(rendering);
+                        sb.append(" (" + protegeManager.getRendering(annotation.getValue())).append(")");
                         return sb.toString();
                     //}
                 }

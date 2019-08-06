@@ -169,9 +169,29 @@ public class WorkbenchPanel extends JPanel implements Disposable, OWLModelManage
             computeMaxExplanationsRadioButton.setSelected(true);
         }
 
-        headerPanel.add(computeAllExplanationsRadioButton, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0, GridBagConstraints.NORTHEAST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
-        headerPanel.add(computeMaxExplanationsRadioButton, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0, GridBagConstraints.NORTHEAST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
-
+        headerPanel.add(computeAllExplanationsRadioButton, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0, GridBagConstraints.NORTHEAST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 30), 0, 0));
+        headerPanel.add(computeMaxExplanationsRadioButton, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0, GridBagConstraints.NORTHEAST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 30), 0, 0));
+        
+        JCheckBox useAnnotatedExplanationsCheckBox = new JCheckBox();
+        useAnnotatedExplanationsCheckBox.setAction(new AbstractAction("Use annotated explanations") {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                workbenchSettings.setUseAnnotatedExplanations(useAnnotatedExplanationsCheckBox.isSelected());
+                refill();
+            }
+        });
+        
+        JCheckBox useExpandedKeywordsCheckBox = new JCheckBox();
+        useExpandedKeywordsCheckBox.setAction(new AbstractAction("Use expanded keywords") {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                workbenchSettings.setUseAnnotatedExplanations(useExpandedKeywordsCheckBox.isSelected());
+                refill();
+            }
+        });
+        
+        headerPanel.add(useAnnotatedExplanationsCheckBox, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0, GridBagConstraints.NORTHEAST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
+        headerPanel.add(useExpandedKeywordsCheckBox, new GridBagConstraints(2, 1, 1, 1, 0.0, 0.0, GridBagConstraints.NORTHEAST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));        
 
         final Timer spinnerUpdateTimer = new Timer(800, e -> {
             workbenchSettings.setLimit((Integer) maxExplanationsSelector.getValue());

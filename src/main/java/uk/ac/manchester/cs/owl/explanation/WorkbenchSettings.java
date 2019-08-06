@@ -13,6 +13,17 @@ public class WorkbenchSettings {
     private int limit = 2;
 
     private boolean findAll = true;
+    
+    private boolean useAnnotatedExplanations = true;
+    private boolean useExpandedKeywords = true;
+
+    public void setUseAnnotatedExplanations(boolean b) { useAnnotatedExplanations = b;}
+    
+    public void setUseExpandedKeywords(boolean b) { useExpandedKeywords = b;}
+    
+    public boolean getUseAnnotatedExplanations() { return useAnnotatedExplanations;}
+    
+    public boolean getUseExpandedKeywords() { return useExpandedKeywords;}
 
     public JustificationType getJustificationType() {
         return justificationType;
