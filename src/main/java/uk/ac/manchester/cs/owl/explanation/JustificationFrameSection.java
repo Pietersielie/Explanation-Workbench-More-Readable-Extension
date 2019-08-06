@@ -30,8 +30,6 @@ public class JustificationFrameSection extends AbstractOWLFrameSection<Explanati
         super(editorKit, LABEL, owlFrame);
     }
 
-
-
     @Override
     public String getLabel() {
         Explanation<OWLAxiom> explanation = getRootObject();

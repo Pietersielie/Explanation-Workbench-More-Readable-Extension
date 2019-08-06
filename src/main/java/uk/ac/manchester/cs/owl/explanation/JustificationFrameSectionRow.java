@@ -26,20 +26,13 @@ import java.util.List;
 public class JustificationFrameSectionRow extends AbstractOWLFrameSectionRow<Explanation<OWLAxiom>, OWLAxiom, OWLAxiom>{
 
     private int depth;
-    private static boolean useAnnotatedExplanations = true;
-    private static boolean useExpandedKeywords = true;
-
-    public void setUseAnnotatedExplanations(boolean b) { useAnnotatedExplanations = b;}
     
-    public void setUseExpandedKeywords(boolean b) { useExpandedKeywords = b;}
-    
-    public boolean getUseAnnotatedExplanations() { return useAnnotatedExplanations;}
-    
-    public boolean getUseExpandedKeywords() { return useExpandedKeywords;}
+    private WorkbenchSettings workbenchSettings;
     
     public JustificationFrameSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection<Explanation<OWLAxiom>, OWLAxiom, OWLAxiom> section, Explanation<OWLAxiom> rootObject, OWLAxiom axiom, int depth) {
         super(owlEditorKit, section, getOntologyForAxiom(owlEditorKit, axiom), rootObject, axiom);
         this.depth = depth;
+        this.workbenchSettings = ((JustificationFrame) section.getFrame()).getWorkbenchManager().getWorkbenchSettings();
     }
 
     public int getDepth() {
@@ -60,7 +53,7 @@ public class JustificationFrameSectionRow extends AbstractOWLFrameSectionRow<Exp
         for(int i = 0; i < depth; i++) {
             sb.append("        ");
         }
-	if(useAnnotatedExplanations){
+	if(workbenchSettings.getUseAnnotatedExplanations()){
             Set<OWLAnnotation> annotations = getAxiom().getAnnotations();
             if (!annotations.isEmpty()) {
                 OWLModelManager protegeManager = getOWLModelManager();
@@ -74,9 +67,12 @@ public class JustificationFrameSectionRow extends AbstractOWLFrameSectionRow<Exp
             }
         }
         
-        if(useExpandedKeywords){
+        if(workbenchSettings.getUseExpandedKeywords()){
             sb.append(expandKeywords(rendering));
+            return sb.toString();
         }
+        
+        sb.append(rendering);
 	return sb.toString();
     }
 

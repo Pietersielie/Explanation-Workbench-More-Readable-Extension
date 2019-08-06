@@ -38,7 +38,7 @@ public class JustificationFrameExplanationDisplay extends JPanel implements Expl
         this.workbenchManager = workbenchManager;
         this.axiomSelectionModel = selectionModel;
         this.explanation = explanation;
-        frame = new JustificationFrame(editorKit);
+        frame = new JustificationFrame(editorKit, this.workbenchManager);
         setLayout(new BorderLayout());
         frameList =  new JustificationFrameList(editorKit, selectionModel, workbenchManager, frame);
         add(frameList, BorderLayout.NORTH);

@@ -185,10 +185,13 @@ public class WorkbenchPanel extends JPanel implements Disposable, OWLModelManage
         useExpandedKeywordsCheckBox.setAction(new AbstractAction("Use expanded keywords") {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                workbenchSettings.setUseAnnotatedExplanations(useExpandedKeywordsCheckBox.isSelected());
+                workbenchSettings.setUseExpandedKeywords(useExpandedKeywordsCheckBox.isSelected());
                 refill();
             }
         });
+        
+        useAnnotatedExplanationsCheckBox.setSelected(workbenchSettings.getUseAnnotatedExplanations());
+        useExpandedKeywordsCheckBox.setSelected(workbenchSettings.getUseExpandedKeywords());
         
         headerPanel.add(useAnnotatedExplanationsCheckBox, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0, GridBagConstraints.NORTHEAST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
         headerPanel.add(useExpandedKeywordsCheckBox, new GridBagConstraints(2, 1, 1, 1, 0.0, 0.0, GridBagConstraints.NORTHEAST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));        

@@ -13,8 +13,15 @@ import org.semanticweb.owlapi.model.OWLAxiom;
  */
 public class JustificationFrame extends AbstractOWLFrame<Explanation<OWLAxiom>> {
 
-    public JustificationFrame(OWLEditorKit editorKit) {
+    private WorkbenchManager workbenchManager;
+    
+    public JustificationFrame(OWLEditorKit editorKit, WorkbenchManager workbenchManager) {
         super(editorKit.getOWLModelManager().getOWLOntologyManager());
         addSection(new JustificationFrameSection(editorKit, this));
+        this.workbenchManager = workbenchManager;
     }
+    
+    public WorkbenchManager getWorkbenchManager(){
+        return workbenchManager;
+    } 
 }
