@@ -26,9 +26,11 @@ import java.util.List;
 public class JustificationFrameSectionRow extends AbstractOWLFrameSectionRow<Explanation<OWLAxiom>, OWLAxiom, OWLAxiom>{
 
     private int depth;
-    
+
+    private final static String explanationAnnotationProperty = "exp:Explanation";
+
     private WorkbenchSettings workbenchSettings;
-    
+
     public JustificationFrameSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection<Explanation<OWLAxiom>, OWLAxiom, OWLAxiom> section, Explanation<OWLAxiom> rootObject, OWLAxiom axiom, int depth) {
         super(owlEditorKit, section, getOntologyForAxiom(owlEditorKit, axiom), rootObject, axiom);
         this.depth = depth;
@@ -58,20 +60,20 @@ public class JustificationFrameSectionRow extends AbstractOWLFrameSectionRow<Exp
             if (!annotations.isEmpty()) {
                 OWLModelManager protegeManager = getOWLModelManager();
                 for (OWLAnnotation annotation : annotations){
-                    //if(annotation.getProperty().getIRI() == OWLAnnotatedExplanationIRI){
+                    if(protegeManager.getRendering(annotation.getProperty())).equals(explanationAnnotationProperty){
                         sb.append(rendering);
-                        sb.append(" (" + protegeManager.getRendering(annotation.getValue())).append(")");
+                        sb.append(" (").append(protegeManager.getRendering(annotation.getValue())).append(")");
                         return sb.toString();
-                    //}
+                    }
                 }
             }
         }
-        
+
         if(workbenchSettings.getUseExpandedKeywords()){
             sb.append(expandKeywords(rendering));
             return sb.toString();
         }
-        
+
         sb.append(rendering);
 	return sb.toString();
     }
@@ -79,18 +81,66 @@ public class JustificationFrameSectionRow extends AbstractOWLFrameSectionRow<Exp
     public String expandKeywords(String axiom) {
 	String[] s = axiom.split(" ");
 	String result = "";
-	for(String w : s){
-	    if(w.equals("SubClassOf"))
-		w = "is a subclass of";
-	    if(w.equals("some"))
-		w = "at least one";
-	    if(w.equals("EquivalentTo"))
-		w = "is equivalent to";
-	    if(w != s[s.length - 1])
-		result += w + " ";
-	    else
-		result += w;
-	}
+        boolean disjoint = false;
+        OUTER:
+        for (int i = 0; i < s.length; ++i) {
+            switch (s[i]) {
+                case "SubClassOf":
+                    s[i] = "is a subclass of";
+                    break;
+                case "SubPropertyOf:":
+                    s[i] = "is a subproperty of";
+                    break;
+                case "Type":
+                    s[i] = "is of the type";
+                    break;
+                case "some":
+                    s[i] = "at least one";
+                    break;
+                case "EquivalentTo":
+                    s[i] = "is equivalent to";
+                    break;
+                case "SameAs":
+                    s[i] = "is the same as";
+                    break;
+                case "value":
+                    s[i] = "with the value";
+                    break;
+                case "min":
+                    s[i] = "no less than";
+                    break;
+                case "max":
+                    s[i] = "no more than";
+                    break;
+                case "Domain":
+                    result = result.substring(0, result.length() - (s[i - 1].length() + 1));
+                    result += "The property " + s[i - 1] + " has the ";
+                    break;
+                case "DisjointClasses:":
+                    disjoint = true;
+                    break OUTER;
+                case "Transitive:":
+                    result += s[i + 1] + " is a transitive property.";
+                    break OUTER;
+                default:
+                    break;
+            }
+            if(s[i] != s[s.length - 1])
+                result += s[i] + " ";
+            else
+                result += s[i];
+        }
+        if(disjoint){
+            disjoint = false;
+            result += "The classes ";
+            int j = 2;
+            for(int i = 2; i < s.length - 2; ++i){
+                result += s[i] + " ";
+                ++j;
+            }
+            result += s[j].substring(0, s[j].length() - 1) + " and ";
+            result += s[j + 1] + " are disjoint classes.";
+        }
 	return result;
     }
 
@@ -119,6 +169,7 @@ public class JustificationFrameSectionRow extends AbstractOWLFrameSectionRow<Exp
         return null;
     }
 
+    @Override
     public List<? extends OWLObject> getManipulatableObjects() {
         return Arrays.asList(getAxiom());
     }

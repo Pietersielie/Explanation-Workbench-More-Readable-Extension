@@ -192,6 +192,7 @@ public class WorkbenchPanel extends JPanel implements Disposable, OWLModelManage
         
         useAnnotatedExplanationsCheckBox.setSelected(workbenchSettings.getUseAnnotatedExplanations());
         useExpandedKeywordsCheckBox.setSelected(workbenchSettings.getUseExpandedKeywords());
+        useAnnotatedExplanationsCheckBox.setToolTipText("Only annotations with the property \"exp:Explanation\" will be displayed.");
         
         headerPanel.add(useAnnotatedExplanationsCheckBox, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0, GridBagConstraints.NORTHEAST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
         headerPanel.add(useExpandedKeywordsCheckBox, new GridBagConstraints(2, 1, 1, 1, 0.0, 0.0, GridBagConstraints.NORTHEAST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));        
