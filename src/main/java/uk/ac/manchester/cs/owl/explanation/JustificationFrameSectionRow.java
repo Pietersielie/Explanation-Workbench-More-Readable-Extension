@@ -60,7 +60,7 @@ public class JustificationFrameSectionRow extends AbstractOWLFrameSectionRow<Exp
             if (!annotations.isEmpty()) {
                 OWLModelManager protegeManager = getOWLModelManager();
                 for (OWLAnnotation annotation : annotations){
-                    if(protegeManager.getRendering(annotation.getProperty())).equals(explanationAnnotationProperty){
+                    if(protegeManager.getRendering(annotation.getProperty()).equals(explanationAnnotationProperty)){
                         sb.append(rendering);
                         sb.append(" (").append(protegeManager.getRendering(annotation.getValue())).append(")");
                         return sb.toString();
@@ -70,89 +70,13 @@ public class JustificationFrameSectionRow extends AbstractOWLFrameSectionRow<Exp
         }
 
         if(workbenchSettings.getUseExpandedKeywords()){
-            sb.append(expandKeywords(rendering));
+            sb.append(OWLManchesterSyntaxExpandKeywords.expandKeywords(rendering));
             return sb.toString();
         }
 
         sb.append(rendering);
 	return sb.toString();
     }
-
-    public String expandKeywords(String axiom) {
-	String[] s = axiom.split(" ");
-	String result = "";
-        boolean disjoint = false;
-        OUTER:
-        for (int i = 0; i < s.length; ++i) {
-            switch (s[i]) {
-                case "SubClassOf":
-                    s[i] = "is a subclass of";
-                    break;
-                case "SubPropertyOf:":
-                    s[i] = "is a subproperty of";
-                    break;
-                case "Type":
-                    s[i] = "is of the type";
-                    break;
-                case "some":
-                    s[i] = "at least one";
-                    break;
-                case "EquivalentTo":
-                    s[i] = "is equivalent to";
-                    break;
-                case "SameAs":
-                    s[i] = "is the same as";
-                    break;
-                case "value":
-                    s[i] = "with the value";
-                    break;
-                case "min":
-                    s[i] = "no less than";
-                    break;
-                case "max":
-                    s[i] = "no more than";
-                    break;
-                case "Domain":
-                    result = result.substring(0, result.length() - (s[i - 1].length() + 1));
-                    result += "The property " + s[i - 1] + " has the ";
-                    break;
-                case "DisjointClasses:":
-                    disjoint = true;
-                    break OUTER;
-                case "Transitive:":
-                    result += s[i + 1] + " is a transitive property.";
-                    break OUTER;
-                default:
-                    break;
-            }
-            if(s[i] != s[s.length - 1])
-                result += s[i] + " ";
-            else
-                result += s[i];
-        }
-        if(disjoint){
-            disjoint = false;
-            result += "The classes ";
-            int j = 2;
-            for(int i = 2; i < s.length - 2; ++i){
-                result += s[i] + " ";
-                ++j;
-            }
-            result += s[j].substring(0, s[j].length() - 1) + " and ";
-            result += s[j + 1] + " are disjoint classes.";
-        }
-	return result;
-    }
-
-    /*public String colourString(String s, String colour){
-	StringBuilder sb = new StringBuilder();
-	for(Character c : s.toCharArray()){
-	    sb.append("<font color=" + colour + ">");
-	    sb.append(c);
-	    sb.append("</font>");
-
-	return sb.toString();
-    }*/
 
     @Override
     public List<MListButton> getAdditionalButtons() {
