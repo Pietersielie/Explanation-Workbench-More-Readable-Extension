@@ -23,7 +23,8 @@
 package uk.ac.manchester.cs.owl.explanation;
 
 /**
- * Wrapper class for the expandKeywords(String axiom) function.
+ * Wrapper class for the expandKeywords(String axiom) function. Keywords scraped
+ * from https://www.w3.org/TR/owl2-manchester-syntax/.
  * @author Cilliers Pretorius
  */
 public class OWLManchesterSyntaxExpandKeywords {
@@ -38,7 +39,7 @@ public class OWLManchesterSyntaxExpandKeywords {
     public static String expandKeywords(String axiom) {
 	String[] s = axiom.split(" ");
 	String result = "";
-        boolean disjoint = false;
+        boolean list = false, disjoint = false, classes = false, indiv = false;
         OUTER:
         for (int i = 0; i < s.length; ++i) {
             switch (s[i]) {
@@ -48,6 +49,18 @@ public class OWLManchesterSyntaxExpandKeywords {
                 case "SubPropertyOf:":
                     s[i] = "is a subproperty of";
                     break;
+                case "InverseOf:":
+                    s[i] = "is the inverse of";
+		    break;
+                case "inverse"://New
+                    s[i] = "is the inverse of";
+		    break;
+		case "DisjointWith"://New
+		    s[i] = "is disjoint with";
+		    break;
+		case "DisjointUnionOf"://New
+		    s[i] = "is the disjoint union of";
+		    break;
                 case "Type":
                     s[i] = "is of the type";
                     break;
@@ -78,11 +91,51 @@ public class OWLManchesterSyntaxExpandKeywords {
                     result += "The property " + s[i - 1] + " has the ";
 		    break;
                 case "DisjointClasses:":
+                    list = true;
                     disjoint = true;
+                    classes = true;
+                    indiv = false;
+                    break OUTER;
+                case "DisjointProperties:"://new
+                    list = true;
+                    disjoint = true;
+                    classes = false;
+                    indiv = false;
+                    break OUTER;
+                case "EquivalentClasses:"://new
+                    list = true;
+                    disjoint = false;
+                    classes = true;
+                    indiv = false;
+                    break OUTER;
+                case "EquivalentProperties:"://new
+                    list = true;
+                    disjoint = false;
+                    classes = false;
+                    indiv = false;
+                    break OUTER;
+                case "SameIndividual:"://new
+                    list = true;
+                    disjoint = false;
+                    indiv = true;
+                    break OUTER;
+                case "DifferentIndividuals:"://new
+                    list = true;
+                    disjoint = true;
+                    indiv = true;
                     break OUTER;
                 case "Transitive:":
                     result += s[i + 1] + " is a transitive property.";
                     break OUTER;
+                case "Functional:":
+                    result += s[i + 1] + " is a functional property.";
+		    break OUTER;
+		case "Symmetric:":
+                    result += s[i + 1] + " is a symmetric property.";
+		    break OUTER;
+                case "Reflexive:":
+                    result += s[i + 1] + " is a reflexive property.";
+		    break OUTER;
                 default:
                     break;
             }
@@ -91,16 +144,27 @@ public class OWLManchesterSyntaxExpandKeywords {
             else
                 result += s[i];
         }
-        if(disjoint){
-            disjoint = false;
-            result += "The classes ";
-            int j = 2;
-            for(int i = 2; i < s.length - 2; ++i){
-                result += s[i] + " ";
-                ++j;
+        if(list){
+            if(!indiv){
+                result += (classes) ? "The classes " : "The properties ";
+                int j = 2;
+                for(int i = 2; i < s.length - 2; ++i){
+                    result += s[i] + " ";
+                    ++j;
+                }
+                result += s[j].substring(0, s[j].length() - 1) + " and " + s[j + 1] + " are ";
+                result += (disjoint) ? "disjoint" : "equivalent";
+                result += (classes) ? " classes." : " properties.";
             }
-            result += s[j].substring(0, s[j].length() - 1) + " and ";
-            result += s[j + 1] + " are disjoint classes.";
+            else{
+                int j = 2;
+                for(int i = 2; i < s.length - 2; ++i){
+                    result += s[i] + " ";
+                    ++j;
+                }
+                result += s[j].substring(0, s[j].length() - 1) + " and " + s[j + 1] + " are ";
+                result += (disjoint) ? " different individuals." : " the same individual";
+            }
         }
 	return result;
     }
