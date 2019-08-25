@@ -22,6 +22,9 @@ import java.util.List;
  * Stanford University
  * Bio-Medical Informatics Research Group
  * Date: 19/03/2012
+ * 
+ * Edited in August 2019 by Cilliers Pretorius to allow for menu interactions with the more readable
+ * explanations extension (https://github.com/Pietersielie/Explanation-Workbench-More-Readable-Extension)
  */
 public class JustificationFrameSectionRow extends AbstractOWLFrameSectionRow<Explanation<OWLAxiom>, OWLAxiom, OWLAxiom>{
 
@@ -55,6 +58,9 @@ public class JustificationFrameSectionRow extends AbstractOWLFrameSectionRow<Exp
         for(int i = 0; i < depth; i++) {
             sb.append("        ");
         }
+        /* This section below was added in August 2019 to allow for explanations
+         * as defined by the ontology creator to be displayed along with the axiom.
+         */
 	if(workbenchSettings.getUseAnnotatedExplanations()){
             Set<OWLAnnotation> annotations = getAxiom().getAnnotations();
             if (!annotations.isEmpty()) {
@@ -68,7 +74,10 @@ public class JustificationFrameSectionRow extends AbstractOWLFrameSectionRow<Exp
                 }
             }
         }
-
+        /* The if statement below was added in August 2019 to allow keywords in
+         * the axioms (as defined by the Manchester Syntax) to be expanded to use
+         * a more natural language.
+         */
         if(workbenchSettings.getUseExpandedKeywords()){
             sb.append(OWLManchesterSyntaxExpandKeywords.expandKeywords(rendering));
             return sb.toString();

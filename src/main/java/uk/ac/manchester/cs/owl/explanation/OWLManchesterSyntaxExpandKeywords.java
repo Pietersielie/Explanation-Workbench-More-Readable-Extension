@@ -52,13 +52,13 @@ public class OWLManchesterSyntaxExpandKeywords {
                 case "InverseOf:":
                     s[i] = "is the inverse of";
 		    break;
-                case "inverse"://New
+                case "inverse":
                     s[i] = "is the inverse of";
 		    break;
-		case "DisjointWith"://New
+		case "DisjointWith":
 		    s[i] = "is disjoint with";
 		    break;
-		case "DisjointUnionOf"://New
+		case "DisjointUnionOf":
 		    s[i] = "is the disjoint union of";
 		    break;
                 case "Type":
@@ -96,30 +96,30 @@ public class OWLManchesterSyntaxExpandKeywords {
                     classes = true;
                     indiv = false;
                     break OUTER;
-                case "DisjointProperties:"://new
+                case "DisjointProperties:":
                     list = true;
                     disjoint = true;
                     classes = false;
                     indiv = false;
                     break OUTER;
-                case "EquivalentClasses:"://new
+                case "EquivalentClasses:":
                     list = true;
                     disjoint = false;
                     classes = true;
                     indiv = false;
                     break OUTER;
-                case "EquivalentProperties:"://new
+                case "EquivalentProperties:":
                     list = true;
                     disjoint = false;
                     classes = false;
                     indiv = false;
                     break OUTER;
-                case "SameIndividual:"://new
+                case "SameIndividual:":
                     list = true;
                     disjoint = false;
                     indiv = true;
                     break OUTER;
-                case "DifferentIndividuals:"://new
+                case "DifferentIndividuals:":
                     list = true;
                     disjoint = true;
                     indiv = true;

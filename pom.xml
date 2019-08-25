@@ -12,8 +12,8 @@
 	</parent>
 	
 	<groupId>edu.stanford.protege</groupId>	
-	<artifactId>explanation-workbench</artifactId>
-	<version>3.0.2-SNAPSHOT</version>
+	<artifactId>Explanation-Workbench-More-Readable-Extension</artifactId>
+	<version>1.0</version>
 	<packaging>bundle</packaging>
 
 	<licenses>
@@ -29,26 +29,31 @@
 		</license>
 	</licenses>
 
-	<name>Explanation Workbench</name>
-    <description>A plug-in that adds explanation facilities to the Protege Desktop ontology editor.
-		Written by Matthew Horridge during his PhD at the University of Manchester.</description>
-	<url>http://owl.cs.manchester.ac.uk/explanation</url>
+	<name>Explanation Workbench More Readable Extension</name>
+    <description>An extension of Matthew Horridge's Explanation Workbench for 
+        the Protégé Desktop Ontology Editor to have more readable explanations.</description>
+	<url>https://github.com/Pietersielie/Explanation-Workbench-More-Readable-Extension</url>
 
 	<developers>
 		<developer>
 			<name>Matthew Horridge</name>
 			<email>matthew.horridge@stanford.edu</email>
 		</developer>
+                
+                <developer>
+                        <name>Cilliers Pretorius</name>
+                        <email>pietersieliefun@gmail.com</email>
+                </developer>
 	</developers>
 	
 	<scm>
-		<connection>scm:git:git@github.com:protegeproject/explanation-workbench.git</connection>
-		<developerConnection>scm:git:git@github.com:protegeproject/explanation-workbench.git</developerConnection>
-		<url>https://github.com/protegeproject/explanation-workbench</url>
+		<connection>scm:git:git@github.com:Pietersielie/Explanation-Workbench-More-Readable-Extension.git</connection>
+		<developerConnection>scm:git:git@github.com:Pietersielie/Explanation-Workbench-More-Readable-Extension.git</developerConnection>
+		<url>https://github.com/Pietersielie/Explanation-Workbench-More-Readable-Extension</url>
 	</scm>
 	<issueManagement>
 		<system>GitHub</system>
-		<url>https://github.com/protegeproject/explanation-workbench/issues</url>
+		<url>https://github.com/Pietersielie/Explanation-Workbench-More-Readable-Extension/issues</url>
 	</issueManagement>	
 
 	<repositories>

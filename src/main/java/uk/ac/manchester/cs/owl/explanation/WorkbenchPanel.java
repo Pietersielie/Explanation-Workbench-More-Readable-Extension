@@ -49,6 +49,9 @@ import java.util.stream.Collectors;
  * Author: Matthew Horridge The University Of Manchester Information Management Group Date:
  * 04-Oct-2008
  * Displays a set of explanations
+ * 
+ * Edited in August 2019 by Cilliers Pretorius to allow for menu interactions with the more readable
+ * explanations extension (https://github.com/Pietersielie/Explanation-Workbench-More-Readable-Extension)
  */
 public class WorkbenchPanel extends JPanel implements Disposable, OWLModelManagerListener, EntailmentSelectionListener, AxiomSelectionModel, ExplanationManagerListener {
 

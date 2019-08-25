@@ -5,6 +5,9 @@ package uk.ac.manchester.cs.owl.explanation;
  * Stanford University
  * Bio-Medical Informatics Research Group
  * Date: 20/03/2012
+ * 
+ * Edited in August 2019 by Cilliers Pretorius to allow for menu interactions with the more readable
+ * explanations extension (https://github.com/Pietersielie/Explanation-Workbench-More-Readable-Extension)
  */
 public class WorkbenchSettings {
 
